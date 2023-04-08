@@ -1,0 +1,75 @@
+@import './libs/vars';
+@import './libs/breakpoints';
+@import './base/resets';
+
+@function weight( $weight-name ){
+    @return map-get($font-weights , $weight-name );
+}
+
+@mixin flexCenter($direction){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: $direction;
+}
+
+@mixin theme($light-theme : true){
+    @if $light-theme {
+        background-color: lighten( $primary-color, 100% );
+        color: darken($font-color-p, 100%);
+    }
+}
+
+@mixin mobile(){
+    @media (max-width: $mobile){
+        @content
+    }
+}
+
+
+body {
+    background-color:$primary-color;
+    color: $font-color-p;
+    
+}
+// remender thar ↓
+// & : take name of pather, and concat to the name of childs
+// #{&} :& in #{} create that : .main .main_paragraph 
+.main{
+    @include flexCenter(row);
+    width: calc(100% - 10%);
+    margin: 0 auto;
+    #{&}_paragraph1{
+        
+        font-weight: weight( medium );
+        
+        &:hover{
+            color : $font-color-s;
+            cursor: pointer;
+        }
+    }
+    #{&}_paragraph2{
+        // herencia in scss, is thit formt ↓
+        @extend .main_paragraph1;
+        color:aqua;
+    }
+    #{&}_paragraph3{
+        @extend .main_paragraph1;
+    }
+    @include mobile{
+        flex-direction: column;
+    }
+}
+
+.container {
+    background-color: $secundari-color;
+}
+
+h1{
+    font-size: 3em;
+    font-weight: bold;
+}
+
+.light{
+    @include theme( $light-theme : false );
+}
